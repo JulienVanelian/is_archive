@@ -1,4 +1,4 @@
-import { encodeToString } from 'https://deno.land/std@0.76.0/encoding/hex.ts'
+import { encodeToString as toHex } from 'https://deno.land/std@0.76.0/encoding/hex.ts'
 
 const magicBytesSequences = [
     '50 4B 03 04', // ZIP
@@ -38,14 +38,21 @@ const magicBytesSequences = [
 
 export async function isArchive(path: string) {
     const buf = new Uint8Array(8)
-    const file = await Deno.open(path)
-    await Deno.read(file.rid, buf)
-    Deno.close(file.rid)
+    let file = null
 
-    const bytes = encodeToString(buf).toUpperCase()
+    try {
+        file = await Deno.open(path)
+        await Deno.read(file.rid, buf)
+        Deno.close(file.rid)
+    } catch (e) {
+        console.log(e)
+        Deno.exit(1)
+    }
 
-    for (let sequence of magicBytesSequences) {
-        if (bytes.startsWith(sequence.replaceAll(' ', ''))) {
+    const bytes = toHex(buf).toUpperCase()
+
+    for (let i = 0; i < magicBytesSequences.length; ++i) {
+        if (bytes.startsWith(magicBytesSequences[i].replaceAll(' ', ''))) {
             return true
         }
     }
