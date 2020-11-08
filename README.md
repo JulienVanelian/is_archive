@@ -26,6 +26,33 @@ $ is-archive path/to/archive.tar
 $ ✅ - path/to/archive.tar is an archive!
 ```
 
+## How it works
+
+This module compares the first bytes of the input file to known archive formats magic bytes.
+
+## Supported archive formats
+- ZIP
+- LZIP
+- TAR
+- GZIP
+- XZ
+- LZ4
+- BZIP2
+- RNC
+- RAR
+- XAR
+- OAR
+- 7ZIP
+- CAB
+- QUANTUM
+- DEB
+- ZLIB
+- LZFSE
+- ZSTANDARD
+- QUICKZIP
+
+If you feel an archive format is missing, don't hesitate to contribute!
+
 ## License
 
 MIT License
